@@ -97,7 +97,7 @@ export default {
           );
           //索引为0向上翻页
           if (idx === 0) {
-            this.$refs.list.scrollTo(0,40*(this.start - 15))
+            this.$refs.list.scrollTo(0,this.itemSize * (this.start - this.visibleData.length))
             this.start = Math.max(this.start - 1, 0);
             if (this.start != 0) {
               this.end = this.end - 1;
@@ -112,7 +112,7 @@ export default {
           //索引为length-1向下翻页
           if (idx === this.visibleData.length - 1) {
             this.end = Math.min(this.end + 1, this.listData.length);
-            this.$refs.list.scrollTo(0,40*(15 + this.start))
+            this.$refs.list.scrollTo(0,this.itemSize * (this.start - this.visibleData.length))
             if (this.end != this.listData.length) {
               this.start = this.start + 1;
             }
@@ -122,7 +122,7 @@ export default {
             this.activeList + 1,
             this.listData.length - 1
           );
-        } else if (e.keyCode === 13) {//enter
+        } else if (e.keyCode === 13) {//Enter
           alert(`您选择了第${this.activeList + 1}行`);
         }
       };
