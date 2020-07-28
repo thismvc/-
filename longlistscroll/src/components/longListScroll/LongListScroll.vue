@@ -19,7 +19,7 @@ export default {
   data() {
     return {
       data: arr,
-      itemSize: 30,
+      itemSize: 40,
       divH: 600,
       divW: 400,
       tts: ["序号", "名称", "代码", "内容"]

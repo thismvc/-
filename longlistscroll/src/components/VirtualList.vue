@@ -1,7 +1,12 @@
 <template>
-  <div ref="list" class="infinite-list-container" :style="{width: containerW + 17 + 'px'}" @scroll="scrollEvent($event)">
+  <div
+    ref="list"
+    class="infinite-list-container"
+    :style="{width: containerW + 17 + 'px'}"
+    @scroll="scrollEvent($event)"
+  >
     <div class="infinite-list-phantom" :style="{ height: listHeight + 'px',width: '1px' }"></div>
-    <div class="infinite-list"  :style="{ transform: getTransform , width: containerW + 'px'}">
+    <div class="infinite-list" :style="{ transform: getTransform , width: containerW + 'px'}">
       <div
         ref="items"
         class="infinite-list-item"
@@ -32,12 +37,12 @@ export default {
     //每项高度
     itemSize: {
       type: Number,
-      default: () => 30
+      default: () => 40
     },
     //容器宽度
     containerW: {
-        type: Number,
-        default: () => 400
+      type: Number,
+      default: () => 400
     }
   },
   computed: {
@@ -87,17 +92,21 @@ export default {
     handleKeydown() {
       document.onkeydown = e => {
         //阻止上下方向键会触发滚动事件
-        e.preventDefault()
+        e.preventDefault();
         //主动聚焦
-        document.documentElement.focus()
-        if (e.keyCode === 38) {//向上
-         //找出当前点击的可见列表索引
+        document.documentElement.focus();
+        if (e.keyCode === 38) {
+          //向上
+          //找出当前点击的可见列表索引
           let idx = this.visibleData.findIndex(
             item => item.id === this.activeList
           );
           //索引为0向上翻页
           if (idx === 0) {
-            this.$refs.list.scrollTo(0,this.itemSize * (this.start - this.visibleData.length))
+            this.$refs.list.scrollTo(
+              0,
+              this.itemSize * (this.start - this.visibleData.length)
+            );
             this.start = Math.max(this.start - 1, 0);
             if (this.start != 0) {
               this.end = this.end - 1;
@@ -105,15 +114,19 @@ export default {
           }
           //显示选中的列表
           this.activeList = Math.max(this.activeList - 1, 0);
-        } else if (e.keyCode === 40) {//向下
+        } else if (e.keyCode === 40) {
+          //向下
           let idx = this.visibleData.findIndex(
             item => item.id === this.activeList
           );
           //索引为length-1向下翻页
           if (idx === this.visibleData.length - 1) {
+            this.$refs.list.scrollTo(
+              0,
+              this.itemSize * ( this.start + this.visibleData.length )
+            );
             this.end = Math.min(this.end + 1, this.listData.length);
-            this.$refs.list.scrollTo(0,this.itemSize * (this.start - this.visibleData.length))
-            if (this.end != this.listData.length) {
+            if (this.end != this.listData.length - 1) {
               this.start = this.start + 1;
             }
           }
@@ -122,9 +135,11 @@ export default {
             this.activeList + 1,
             this.listData.length - 1
           );
-        } else if (e.keyCode === 13) {//Enter
+        } else if (e.keyCode === 13) {
+          //Enter
           alert(`您选择了第${this.activeList + 1}行`);
         }
+        console.log(this.start, this.end)
       };
     },
     scrollEvent() {
@@ -143,7 +158,7 @@ export default {
       console.log(scrollTop, this.start, this.end, this.startOffset);
     },
 
-    handleClick( item ) {
+    handleClick(item) {
       this.activeList = item.id;
       console.log("this.$refs.list.scrollTop", this.$refs.list.scrollTop);
       alert(`您选择了${this.activeList + 1}行`);
